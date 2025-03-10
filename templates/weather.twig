@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Citylinker</title>
+</head>
+<body>
+
+
+    <header class="font-classic flex items-center z-50 w-full bg-black text-sm py-3 sm:py-0">
+        <nav class="relative max-w-[85rem] w-full mx-auto px-4 sm:flex sm:items-center sm:justify-between sm:px-6 lg:px-8">
+            <a class="flex text-xl font-semibold text-white" href="/" aria-label="Brand"></a>
+        </nav>
+    </header>
+
+    <section id="hero" class="text-indigo-100 font-classic"
+        style="background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+               url('https://media.istockphoto.com/id/1387359745/photo/punts-on-river-cam-in-cambridge.jpg?s=612x612&w=0&k=20&c=psE3ClvZn6CGCJT2AdL7Z2IHS68Xqwp7LKRIhY6abbM='); 
+               background-size: 100%; background-position: center; height: 100%">
+        <div class="container mx-auto flex px-5 py-10 pt-10 md:flex-row flex-col items-center">
+            <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+                <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-indigo-100">Welcome to Citylinker</h1>
+                <p class="mb-8 leading-relaxed">Discover and navigate Twin Cities</p>
+            </div>
+        </div>
+    </section>
+
+    <h2>Twin Cities Weather</h2>
+    
+    {% if weather1 %}
+    <div class="city">
+        <h3>Weather in {{ weather1.city['@attributes'].name }}</h3>
+        <p>{{ weather1.lastupdate['@attributes'].value | date('l, jS F Y @ H:i:s') }}</p>
+        <table>
+            <tr><th>Condition</th><td>{{ weather1.weather['@attributes'].value }}</td></tr>
+            <tr><th>Temperature</th><td>{{ weather1.temperature['@attributes'].value }} °C</td></tr>
+            <tr><th>Wind</th><td>{{ weather1.wind.speed['@attributes'].value }} m/s ({{ weather1.wind.speed['@attributes'].name }}) from {{ weather1.wind.direction['@attributes'].name }}</td></tr>
+            <tr><th>Humidity</th><td>{{ weather1.humidity['@attributes'].value }}%</td></tr>
+            <tr><th>Pressure</th><td>{{ weather1.pressure['@attributes'].value }} hPa</td></tr>
+            <tr><th>Sunrise</th><td>{{ weather1.city.sun['@attributes'].rise | date('H:i:s', 'UTC') }}</td></tr>
+            <tr><th>Sunset</th><td>{{ weather1.city.sun['@attributes'].set | date('H:i:s', 'UTC') }}</td></tr>
+        </table>
+    </div>
+    {% else %}
+    <p>Weather data for Cambridge is unavailable.</p>
+    {% endif %}
+
+    {% if weather2 %}
+    <div class="city">
+        <h3>Weather in {{ weather2.city['@attributes'].name }}</h3>
+        <p>{{ weather2.lastupdate['@attributes'].value | date('l, jS F Y @ H:i:s') }}</p>
+        <table>
+            <tr><th>Condition</th><td>{{ weather2.weather['@attributes'].value }}</td></tr>
+            <tr><th>Temperature</th><td>{{ weather2.temperature['@attributes'].value }} °C</td></tr>
+            <tr><th>Wind</th><td>{{ weather2.wind.speed['@attributes'].value }} m/s ({{ weather2.wind.speed['@attributes'].name }}) from {{ weather2.wind.direction['@attributes'].name }}</td></tr>
+            <tr><th>Humidity</th><td>{{ weather2.humidity['@attributes'].value }}%</td></tr>
+            <tr><th>Pressure</th><td>{{ weather2.pressure['@attributes'].value }} hPa</td></tr>
+            <tr><th>Sunrise</th><td>{{ weather2.city.sun['@attributes'].rise | date('H:i:s', 'UTC') }}</td></tr>
+            <tr><th>Sunset</th><td>{{ weather2.city.sun['@attributes'].set | date('H:i:s', 'UTC') }}</td></tr>
+        </table>
+    </div>
+    {% else %}
+    <p>Weather data for Heidelberg is unavailable.</p>
+    {% endif %}
+</body>
+</html>
