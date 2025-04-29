@@ -1,9 +1,21 @@
 <?php
+
 namespace App\Controllers;
 
-class NewsController {
-    public function showNewsFeed($request, $response, $args) {
-        // Your RSS feed logic goes here (refer to your current newsfeed.html script)
-        return $this->get('view')->render($response, 'newsfeed.html');
+use Psr\Http\Message\ResponseInterface as Response;
+use Psr\Http\Message\ServerRequestInterface as Request;
+use Slim\Views\Twig;
+
+class NewsController
+{
+    protected Twig $view;
+
+    public function __construct(Twig $view)
+    {
+        $this->view = $view;
+    }
+    public function showNews(Request $request, Response $response, array $args)
+    {
+        return $this->view->render($response, 'news.twig', []);
     }
 }

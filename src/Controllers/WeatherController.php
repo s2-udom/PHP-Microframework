@@ -1,6 +1,8 @@
 <?php
 namespace App\Controllers;
 
+use Slim\Views\Twig; 
+
 class WeatherController {
     public function showWeather($request, $response, $args): mixed {
         // City names and API key
@@ -19,18 +21,18 @@ class WeatherController {
                 echo "Failed to load XML data.";
                 return null;
             }
-            return $xml;
+            return json_decode(json_encode($xml), true);
         }
 
         // Get weather data for both cities
         $weather1 = getWeatherData($url1);
         $weather2 = getWeatherData($url2);
+       
 
-    
-          // Now render the weather data with Twig
-        // The $twig variable is the Twig instance that you should pass data to
-        /** @var Twig $twig */
-        global $twig;  // You can access Twig globally if it's set up this way, or inject via constructor
+
+        // Get the Twig instance correctly from the request
+        $twig = Twig::fromRequest($request);
+
         return $twig->render($response, 'weather.twig', [
             'weather1' => $weather1,
             'weather2' => $weather2

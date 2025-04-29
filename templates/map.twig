@@ -1,0 +1,77 @@
+{% block content %}
+
+<section id="hero" class="text-indigo-100 font-classic"
+    style="background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+    url('https://media.istockphoto.com/id/1387359745/photo/punts-on-river-cam-in-cambridge.jpg?s=612x612&w=0&k=20&c=psE3ClvZn6CGCJT2AdL7Z2IHS68Xqwp7LKRIhY6abbM=')
+    center/cover no-repeat; height: 100%;">
+    
+    <div class="container mx-auto flex px-5 py-10 pt-10 md:flex-row flex-col items-center">
+        <div class="lg:flex-grow md:w-1/2 lg:pr-24 md:pr-16 flex flex-col md:items-start md:text-left mb-16 md:mb-0 items-center text-center">
+            <h1 class="title-font sm:text-4xl text-3xl mb-4 font-medium text-indigo-100">Welcome to Citylinker</h1>
+            <p class="mb-8 leading-relaxed">Discover and navigate cities</p>
+        </div>
+    </div>
+</section>
+
+<h1>Cambridge and Heidelberg POIs</h1>
+
+<div id="map-container">
+    <div id="map-cambridge" class="map-box"></div>
+    <div id="map-heidelberg" class="map-box"></div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.1.2/mapbox-gl.js"></script>
+<script>
+    const MY_TOKEN = "pk.eyJ1IjoibGFtaW5zb3dlIiwiYSI6ImNsc3QwZWswazB4ZHcya3FpMHlsMTRwcm0ifQ.Q_j87Q5QrGUbORgT5s3Bqw";
+    mapboxgl.accessToken = MY_TOKEN;
+
+    const cities = {
+        cambridge: {
+            coords: [0.1218, 52.2053],
+            places: [
+                { name: "King's College Chapel", lat: 52.2051, lon: 0.1182, wiki: "King's_College_Chapel,_Cambridge" },
+                { name: "Fitzwilliam Museum", lat: 52.2004, lon: 0.1192, wiki: "Fitzwilliam_Museum" },
+                { name: "Mathematical Bridge", lat: 52.2025, lon: 0.1133, wiki: "Mathematical_Bridge" },
+                { name: "Botanic Garden", lat: 52.1948, lon: 0.1272, wiki: "Cambridge_University_Botanic_Garden" },
+                { name: "Market Square", lat: 52.2058, lon: 0.1192, wiki: "Cambridge_Market" },
+                { name: "The Backs", lat: 52.2057, lon: 0.1116, wiki: "The_Backs" }
+            ]
+        },
+        heidelberg: {
+            coords: [8.6724, 49.3988],
+            places: [
+                { name: "Heidelberg Castle", lat: 49.4106, lon: 8.7153, wiki: "Heidelberg_Castle" },
+                { name: "Old Bridge", lat: 49.4146, lon: 8.7084, wiki: "Karl_Theodor_Bridge" },
+                { name: "Philosopher's Walk", lat: 49.4165, lon: 8.7110, wiki: "Philosophenweg" },
+                { name: "Heidelberg University Library", lat: 49.4077, lon: 8.6939, wiki: "Heidelberg_University_Library" },
+                { name: "Thingstätte", lat: 49.4193, lon: 8.7082, wiki: "Thingstätte" },
+                { name: "Königstuhl", lat: 49.3981, lon: 8.7354, wiki: "Königstuhl_(Odenwald)" }
+            ]
+        }
+    };
+
+    function createMap(cityId, cityData) {
+        var map = new mapboxgl.Map({
+            container: `map-${cityId}`,
+            center: cityData.coords,
+            zoom: 14,
+            style: 'mapbox://styles/mapbox/streets-v11'
+        });
+
+        cityData.places.forEach(place => {
+            let marker = new mapboxgl.Marker()
+                .setLngLat([place.lon, place.lat])
+                .setPopup(new mapboxgl.Popup({ offset: 25 })
+                    .setHTML(`<strong>${place.name}</strong><br>
+                    <a href="https://en.wikipedia.org/wiki/${place.wiki}" target="_blank">Learn More</a>`))
+                .addTo(map);
+        });
+    }
+
+    createMap("cambridge", cities.cambridge);
+    createMap("heidelberg", cities.heidelberg);
+</script>
+{% endblock %}
